@@ -23,7 +23,7 @@ exports.registerUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
         const newUser = new User({ username, password: hashedPassword });
-        newUser.save();
+        await newUser.save();
 
         res.status(200).send({
             status: "success",
@@ -63,7 +63,7 @@ exports.login = async (req, res) => {
         const token = jwt.sign(
             payload,
             process.env.AUTHORISATION_TOKEN_SECRET,
-            { expiresIn: "1m" }
+            { expiresIn: "1h" }
         );
         res.status(200).send({
             status: "success",
