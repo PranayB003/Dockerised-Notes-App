@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const User = require("../models/userModel");
 
 exports.handleMissingCredentials = (req, res, next) => {
     const { username, password } = req.body;
@@ -21,7 +22,8 @@ exports.registerUser = async (req, res) => {
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        // store username and password in database
+        const newUser = new User({ username, password: hashedPassword });
+        newUser.save();
 
         res.status(200).send({
             status: "success",
@@ -38,14 +40,21 @@ exports.registerUser = async (req, res) => {
 exports.login = async (req, res) => {
     const { username, password } = req.body;
 
-    // Get storedPassword and userID from database
-    const storedPassword = "";
-    const userID = "";
+    const user = await User.findOne({ username: username }).exec();
+    if (!user) {
+        return res.status(404).send({
+            status: "failed",
+            message: "User not found",
+        });
+    }
+
+    console.log(user);
+    const storedPassword = user.password;
+    const userID = user._id;
 
     try {
         await bcrypt.compare(password, storedPassword);
 
-        // Construct payload
         const payload = {
             username,
             userID,
@@ -54,7 +63,7 @@ exports.login = async (req, res) => {
         const token = jwt.sign(
             payload,
             process.env.AUTHORISATION_TOKEN_SECRET,
-            { expiresIn: "1h" }
+            { expiresIn: "1m" }
         );
         res.status(200).send({
             status: "success",
@@ -62,6 +71,7 @@ exports.login = async (req, res) => {
             token,
         });
     } catch (error) {
+        console.log(error);
         res.status(401).send({
             status: "failed",
             message: "Incorrect username or password",
@@ -87,6 +97,9 @@ exports.authoriseUser = (req, res, next) => {
         );
         next();
     } catch (error) {
-        res.sendStatus(401);
+        res.status(401).send({
+            status: "failed",
+            message: "Invalid token",
+        });
     }
 };

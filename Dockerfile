@@ -10,4 +10,4 @@ EXPOSE 3000
 
 COPY ./ ./
 
-CMD [ "node", "server.js" ]
+CMD [ "node", "src/server.js" ]
