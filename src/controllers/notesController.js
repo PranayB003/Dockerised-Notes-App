@@ -1,4 +1,3 @@
-const { response } = require("../app");
 const Note = require("../models/noteModel");
 
 exports.createNote = async (req, res) => {
