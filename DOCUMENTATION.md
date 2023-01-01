@@ -18,14 +18,14 @@ Note: The base URL for all the endpoints in this webapp is `/api/v1`. All endpoi
     `POST /users/register`\
     Creates a new user in the database, accepts a username and a password in the request body.\
     ###### request body (json):
-    ```json
+    ```javascript
     {
         "username": String,
         "password": String
     }
     ```
     ###### response body (json):
-    ```json
+    ```javascript
     {
         "status": "success",
         "message": "User created successfully"
@@ -36,14 +36,14 @@ Note: The base URL for all the endpoints in this webapp is `/api/v1`. All endpoi
     `POST /users/login`\
     Logs in an existing user, accepts a username and password in the request body. The application uses JSON Web Tokens (JWTs) for authentication, where each token expires in 1 hour.\
     ###### request body (json):
-    ```json
+    ```javascript
     {
         "username": String,
         "password": String
     }
     ```
     ###### response body (json):
-    ```json
+    ```javascript
     {
         "status": "success",
         "message": "authenticated",
@@ -63,14 +63,14 @@ All routes in this section expect authorisation headers in the following form, w
     `POST /notes`\
     Creates a new note and returns the newly created note upon successful creation.\
     ###### request body (json):
-    ```json
+    ```javascript
     {
         "title": String,
         "body"?: String
     }
     ```
     ###### response body (json):
-    ```json
+    ```javascript
     {
         "status": "success",
         "data": {
@@ -88,7 +88,7 @@ All routes in this section expect authorisation headers in the following form, w
     `GET /notes`\
     Fetches all notes authored by the currently authenticated user.\
     ###### response body (json):
-    ```json
+    ```javascript
     {
         "status": "success",
         "data": {
@@ -107,7 +107,7 @@ All routes in this section expect authorisation headers in the following form, w
     `GET /notes/:note_id`\
     Fetches a single note with an `_id` of `note_id` (as specified in the request params), authored by the currently authenticated user.\
     ###### response body (json):
-    ```json
+    ```javascript
     {
         "status": "success",
         "data": {
@@ -125,14 +125,14 @@ All routes in this section expect authorisation headers in the following form, w
     `PATCH /notes/:note_id`\
     Updates the title and/or body of a previously existing note created by the currently authenticated user.\
     ###### request body (json):
-    ```json
+    ```javascript
     {
         "title"?: String,
         "body"?: String
     }
     ```
     ###### response body (json):
-    ```json
+    ```javascript
     {
         "status": "success",
         "data": {
