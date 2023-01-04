@@ -1,2 +1,5 @@
 node_modules
 .devcontainer
+.gitignore
+.prettierignore
+*.md
